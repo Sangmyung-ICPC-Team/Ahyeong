@@ -1,38 +1,21 @@
 import sys
+from collections import deque
 
-def dfs(x, y):
-    visited[x][y] = True
+N, K = map(int, sys.stdin.readline().split())
+q = deque()
+q.append(N)
 
-    dx = [0, 0, -1, 1, -1, -1, 1, 1]
-    dy = [1, -1, 0, 0, 1, -1, 1, -1]
+visited = [0 for _ in range(100001)]
 
-    for i in range(8):
-        nx = x + dx[i]
-        ny = y + dy[i]
-
-        if 0<=nx<h and 0<=ny<w and graph[nx][ny] == 1 and visited[nx][ny] == False:
-            dfs(nx, ny)
-
-
-if __name__ == "__main__":
-    while True:
-        w, h = map(int, sys.stdin.readline().split())
-        if w == 0 and h == 0:
-            break
-
-        graph = []
-        for i in range(h):
-            graph.append(list(map(int, sys.stdin.readline().split())))
-
-        visited = [[False for _ in range(w)] for _ in range(h)]
-
-        cnt = 0
-
-        for i in range(h):
-            for j in range(w):
-                if visited[i][j] == False and graph[i][j] == 1:
-                    dfs(i,j)
-                    cnt += 1
-        print(cnt)
-
-
+def bfs():
+    while q:
+        x = q.popleft()
+        print(visited[:17])
+        if x == K:
+            return visited[x]
+        for i in [x-1, x+1, 2*x]:
+            if 0 <= i <= 100000 and visited[i] == 0:
+                visited[i] = visited[x] + 1
+                q.append(i)
+            
+print(bfs())
